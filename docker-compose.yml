@@ -1,0 +1,43 @@
+services:
+
+  redis:
+    image: redis:latest
+
+  proxy:
+    build: .
+    ports:
+      - 8676:8676
+    depends_on:
+      - metadata-service
+      - backend
+    environment:
+      - DATACLAY_PROXY_MDS_HOST=metadata-service
+      - DATACLAY_KV_HOST=redis
+    command: python -m dataclay.proxy
+
+  metadata-service:
+    build: .
+    depends_on:
+      - redis
+    environment:
+      - DATACLAY_KV_HOST=redis
+    command: python -m dataclay.metadata
+
+  backend:
+    build: .
+    depends_on:
+      - redis
+    environment:
+      - DATACLAY_KV_HOST=redis
+      - DATACLAY_MEMORY_CHECK_INTERVAL=600
+    command: python -m dataclay.backend
+    volumes:
+      - ./model:/usr/src/model:ro
+
+  # ONLY used for testing purposes (remove if you have your own data source)
+  otel-collector:
+    image: otel/opentelemetry-collector
+    volumes:
+      - ./otel-config.yaml:/etc/otel-config.yaml
+    command: --config=/etc/otel-config.yaml
+    network_mode: host
