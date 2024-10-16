@@ -2,4 +2,4 @@ pandas
 grpcio
 grpcio-tools
 jupyter
-git+https://github.com/bsc-dom/dataclay
+dataclay
