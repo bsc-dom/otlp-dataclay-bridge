@@ -1,5 +1,3 @@
 pandas
-grpcio
-grpcio-tools
-jupyter
-dataclay
+grpcio~=1.48.2
+git+https://github.com/bsc-dom/dataclay@icos-ml
