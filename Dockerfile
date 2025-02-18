@@ -9,6 +9,6 @@ RUN mkdir -p /dataclay/storage; \
 
 WORKDIR /usr/src
 
-COPY . /usr/src/app
+COPY . /app
 
-CMD [ "/usr/local/bin/python3", "/usr/src/app/run_bridge.py" ]
+CMD [ "/usr/local/bin/python3", "/app/run_bridge.py" ]
